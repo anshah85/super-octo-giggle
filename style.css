@@ -75,8 +75,8 @@ body {
 
   .cart-item {
     display: flex;
-    /* justify-content: space-between; */
-    /* align-items: center; */
+    justify-content: space-between;
+    align-items: center;
   }
 
   .minus {
@@ -144,7 +144,6 @@ body {
     font-size: 16px;
   }
   
-  /* Edit mode styling for cart items */
   .cart__list li.editing .controls {
     gap: 3px;
   }
