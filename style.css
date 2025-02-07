@@ -36,10 +36,12 @@ body {
   }
 
   li {
+    background-color: lightyellow;
+    padding: 10px;
+    margin-bottom: 10px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: lightyellow;
   }
   
   .inventory__list li,
