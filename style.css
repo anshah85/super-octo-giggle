@@ -1,0 +1,74 @@
+/* Basic page styling */
+body {
+    font-family: Arial, sans-serif;
+    background: rgb(251, 238, 240);
+    margin: 0;
+    padding: 20px;
+  }
+  
+  #app {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  
+  /* Inventory and Cart Containers */
+  .inventory-container,
+  .cart-container {
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    flex: 1;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .inventory-container h1,
+  .cart-container h1 {
+    text-align: center;
+  }
+  
+  /* List styling */
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .inventory__list li,
+  .cart__list li {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  /* Controls styling */
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  button {
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  .checkout-btn {
+    width: 100%;
+    margin-top: 10px;
+    background: black;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    font-size: 16px;
+  }
+  
+  /* Edit mode styling for cart items */
+  .cart__list li.editing .controls {
+    gap: 3px;
+  }
+  
