@@ -1,4 +1,3 @@
-// alert("Hello, World!");
 const API = (() => {
   const URL = "http://localhost:3000";
   const getCart = () => {
@@ -260,7 +259,7 @@ const Controller = ((Model, View) => {
         await Model.addToCart(item);
       }
       const newCartData = await Model.getCart();
-      state.cart = newCartData;  // Using the setter instead of setCart
+      state.cart = newCartData;
     } catch (error) {
       console.log("Error adding item to cart", error);
     }
