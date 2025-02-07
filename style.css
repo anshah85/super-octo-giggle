@@ -1,6 +1,6 @@
 /* Basic page styling */
 body {
-    font-family: Arial, sans-serif;
+    /* font-family: Arial, sans-serif; */
     background: rgb(251, 238, 240);
     margin: 0;
     padding: 20px;
@@ -34,6 +34,12 @@ body {
     list-style: none;
     padding: 0;
   }
+
+  li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
   
   .inventory__list li,
   .cart__list li {
@@ -56,6 +62,74 @@ body {
     padding: 5px 10px;
     cursor: pointer;
   }
+
+
+  .inventory-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .cart-item {
+    display: flex;
+    /* justify-content: space-between; */
+    /* align-items: center; */
+  }
+
+  .minus {
+    background: rgb(231, 62, 62);
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+  }
+
+  .plus {
+    background: rgb(41, 130, 41);
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+  }
+
+  .add-to-cart {
+    background: rgb(17, 73, 136);
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+  }
+
+  .delete {
+    background: black;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+  }
+
+  .edit {
+    background: rgb(17, 73, 136);
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+  }
+
+  .minus-edit {
+    background: rgb(231, 62, 62);
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+  }
+
+  .plus-edit {
+    background: rgb(41, 130, 41);
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+  }
+
+  .item-content {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
   
   .checkout-btn {
     width: 100%;
@@ -71,4 +145,3 @@ body {
   .cart__list li.editing .controls {
     gap: 3px;
   }
-  

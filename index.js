@@ -1,3 +1,4 @@
+// alert("Hello, World!");
 const API = (() => {
   const URL = "http://localhost:3000";
   const getCart = () => {
@@ -104,6 +105,7 @@ const View = (() => {
     inventoryListEl.innerHTML = "";
     inventory.forEach((item) => {
       const li = document.createElement("li");
+      li.className = "inventory-item";
       li.dataset.id = item.id;
       li.innerHTML = `
         <span class="item-content">${item.content}</span>
@@ -123,8 +125,10 @@ const View = (() => {
     cart.forEach((item) => {
       const li = document.createElement("li");
       li.dataset.id = item.id;
+      li.dataset.className = "cart-item";
       li.innerHTML = `
         <span class="item-content">${item.content}</span>
+        <span class="item-amount">x</span>
         <span class="item-amount">${item.amount}</span>
         <div class="controls">
           <button class="delete">Delete</button>
@@ -144,13 +148,13 @@ const View = (() => {
         <span class="edit-amount">${item.amount}</span>
         <button class="plus-edit">+</button>
         <button class="save-edit">Save</button>
-        <button class="cancel-edit">Cancel</button>
       </div>
     `;
   };
 
   const bindInventoryEvents = (handleAddToCart) => {
     inventoryListEl.addEventListener("click", (e) => {
+      e.preventDefault();
       const li = e.target.closest("li");
       if (!li) return;
       const selectedAmountEl = li.querySelector(".selected-amount");
@@ -182,6 +186,7 @@ const View = (() => {
     handleCancelEdit
   ) => {
     cartListEl.addEventListener("click", (e) => {
+      e.preventDefault();
       const li = e.target.closest("li");
       if (!li) return;
       const id = li.dataset.id;
@@ -226,67 +231,78 @@ const View = (() => {
 })();
 
 const Controller = ((Model, View) => {
-  // implement your logic for Controller
   const state = new Model.State();
 
   const loadData = async () => {
     try {
-      const inventoryData = await Model.API.getInventory();
-      const cartData = await Model.API.getCart();
+      const inventoryData = await Model.getInventory();
+      const cartData = await Model.getCart();
       state.inventory = inventoryData;
       state.cart = cartData;
     } catch (error) {
-      console.log("Error loading data", error);
-  }};
+      console.error("Error loading data:", error);
+    }
+  };
 
   state.subscribe(() => {
     View.renderInventory(state.inventory);
     View.renderCart(state.cart);
-  });
+  }); 
 
-  const handleAddToCart = async(item) => {
+
+  const handleAddToCart = async (item) => {
     try {
       const existingItem = state.cart.find((cartItem) => cartItem.id === item.id);
       if (existingItem) {
         const newAmount = existingItem.amount + item.amount;
-        await Model.API.updateCart(existingItem.id, newAmount);
+        await Model.updateCart(existingItem.id, newAmount);
       } else {
-        await Model.API.addToCart(item);
+        await Model.addToCart(item);
       }
-      const newCartData = await Model.API.getCart();
-      state.setCart(newCartData);
+      const newCartData = await Model.getCart();
+      state.cart = newCartData;  // Using the setter instead of setCart
     } catch (error) {
       console.log("Error adding item to cart", error);
     }
   };
 
-  const handleEdit = (id) => {
+  const handleDeleteCartItem = async (id) => {
+    try {
+      await Model.deleteFromCart(id);
+      const cartData = await Model.getCart();
+      state.cart = cartData;
+    } catch (error) {
+      console.error("Error deleting cart item:", error);
+    }
+  };
+
+  const handleEditCartItem = (id) => {
     const li = document.querySelector(`.cart__list li[data-id="${id}"]`);
     if (!li) return;
     const item = state.cart.find((item) => item.id === id);
     if (!item) return;
-    View.renderCartEditMode(li, item);  };
+    View.renderCartEditMode(li, item);
+  };
 
-  const handleEditAmount = async (id, newAmount) => {
+  const handleUpdateCartItem = async (id, newAmount) => {
     try {
-      await Model.API.updateCartItem(id, { amount: newAmount });
-      const cartData = await Model.API.getCart();
-      state.setCart(cartData);
+      await Model.updateCart(id, newAmount);
+      const cartData = await Model.getCart();
+      state.cart = cartData;
     } catch (error) {
       console.error("Error updating cart item:", error);
     }
   };
 
-  const handleDelete = async () => {
-    const cartData = await Model.API.getCart();
-    state.setCart(cartData);
+  const handleCancelEdit = () => {
+    View.renderCart(state.cart);
   };
 
   const handleCheckout = async () => {
     try {
-      await Model.API.checkout();
-      const cartData = await Model.API.getCart();
-      state.setCart(cartData);
+      await Model.checkout();
+      const cartData = await Model.getCart();
+      state.cart = cartData;
     } catch (error) {
       console.error("Error during checkout:", error);
     }
@@ -313,4 +329,4 @@ const Controller = ((Model, View) => {
   };
 })(Model, View);
 
-document.addEventListener("DOMContentLoaded", Controller.init);
+Controller.init();
